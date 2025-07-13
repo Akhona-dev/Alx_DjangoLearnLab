@@ -1,10 +1,8 @@
-Book.objects.get(id=3).delete()
+To delete a book from the database, I first imported the `Book` model:
 
-#Output
-(1, {'bookshelf.Book': 1})
 
-Book.objects.all()
+from bookshelf.models import Book
 
-#Output
+book = Book.objects.get(id=3)
+book.delete()
 
-<QuerySet []>
