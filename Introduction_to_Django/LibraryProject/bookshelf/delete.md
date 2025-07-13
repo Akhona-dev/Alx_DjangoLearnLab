@@ -1,0 +1,10 @@
+Book.objects.get(id=3).delete()
+
+#Output
+(1, {'bookshelf.Book': 1})
+
+Book.objects.all()
+
+#Output
+
+<QuerySet []>

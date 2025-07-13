@@ -1,4 +1,4 @@
-Book.objects.all()
+Book.objects.get()
 
 #Output
 
