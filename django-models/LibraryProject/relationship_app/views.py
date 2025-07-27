@@ -2,6 +2,21 @@ from django.shortcuts import render
 from django.views.generic.detail import DetailView
 from .models import Book 
 from .models import Library 
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView, LogoutView
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'relationship_app/register.html', {'form': form})
 
 def list_books(request):
     books = Book.objects.all()
