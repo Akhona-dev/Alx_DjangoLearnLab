@@ -1,46 +1,51 @@
 from django.shortcuts import render, redirect
-from django.views.generic import DetailView, CreateView
-from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.urls import reverse_lazy
-
-# 💥 SPLIT AUTH IMPORTS
+from django.views.generic import DetailView
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth import logout
+from django.contrib import messages
 
 from . import models
 
-# View: List all books
+# View to list all available books
 def show_books(request):
     books = models.Book.objects.all()
     return render(request, "list_books.html", {"books": books})
 
-# View: Library detail
+# Detail view for a library
 class LibraryDetailView(DetailView):
     model = models.Library
     template_name = "library_detail.html"
     context_object_name = "library"
 
-# View: Register user
-class SignUpView(CreateView):
-    form_class = UserCreationForm
-    success_url = reverse_lazy('login')
-    template_name = 'relationship_app/register.html'
-
-# View: Login user
-def login_view(request):
+# Register a new user
+def register(request):
     if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
-            user = form.get_user()
-            login(request, user)
+            user = form.save()
+            login(request, user)  # Logs in the user after registration
             return redirect('show-books')
     else:
-        form = AuthenticationForm()
-    return render(request, 'relationship_app/login.html', {'form': form})
+        form = UserCreationForm()
+    return render(request, 'relationship_app/register.html', {'form': form})
 
-# View: Logout user
+# Log a user in
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('show-books')
+        else:
+            messages.error(request, 'Invalid username or password.')
+    return render(request, 'relationship_app/login.html')
+
+# Log a user out
 def logout_view(request):
     logout(request)
     return render(request, 'relationship_app/logout.html')
