@@ -1,11 +1,8 @@
 from django.shortcuts import render, redirect
-from django.views.generic import DetailView, CreateView
-from django.contrib.auth import authenticate
-from django.contrib.auth import login  # ALX expects this
-from django.contrib.auth import logout
+from django.views.generic import DetailView
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from django.urls import reverse_lazy
 
 from . import models
 
@@ -30,10 +27,16 @@ class LibraryDetailView(DetailView):
 # Authentication views
 # ----------------------------
 
-class SignUpView(CreateView):
-    form_class = UserCreationForm
-    success_url = reverse_lazy('login')
-    template_name = 'registration/register.html'
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Account created successfully. Please log in.')
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})
 
 
 def login_view(request):
@@ -43,7 +46,7 @@ def login_view(request):
 
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request, user)  # login must be used
+            login(request, user)
             return redirect('show-books')
         else:
             messages.error(request, 'Invalid username or password.')
