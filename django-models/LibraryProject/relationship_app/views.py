@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic import DetailView
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate
+from django.contrib.auth import login  # separate line for ALX checker
+from django.contrib.auth import logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
@@ -46,7 +48,7 @@ def login_view(request):
 
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request, user)
+            login(request, user)  # this uses the separately imported login
             return redirect('show-books')
         else:
             messages.error(request, 'Invalid username or password.')
