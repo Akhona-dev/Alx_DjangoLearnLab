@@ -1,6 +1,12 @@
 from django.shortcuts import render , redirect
 from django.views.generic import DetailView
 from . import models
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+
 # Create your views here.
 
 #first view
@@ -13,6 +19,8 @@ def show_books(request):
     }
 
     return render(request, "list_books.html", context)
+    
+    ...
 
 #second view
 #A class based view
@@ -21,20 +29,19 @@ class LibraryDetailView(DetailView):
     template_name = "library_detail.html"
     context_object_name = "library"
 
+    ...
+
 #Authentication
 #Registration
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
 
 class SignUpView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'registration/register.html'
 
+    ...
+
 #logging in
-from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages  
 
 def login_view(request):
     if request.method == 'POST':
@@ -49,6 +56,8 @@ def login_view(request):
             messages.error(request, 'Invalid username or password.')
 
     return render(request, 'registration/login.html')
+
+    ...
 
 #logging out
 
