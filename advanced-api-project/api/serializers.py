@@ -8,8 +8,9 @@ class BookSerializer(serializers.ModelSerializer):
         fields = '__all__' # allows conversion of columns/fields
 
     def validate_publication_year(self, value):
-        if value > 2025:  
-            raise serializers.ValidationError("Publication year cannot be in the future!")
+        import datetime
+        if value > datetime.date.today().year:
+            raise serializers.ValidationError("Publication year cannot be in the future.")
         return value
 
 class AuthorSerializer(serializers.ModelSerializer):
