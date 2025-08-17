@@ -1,0 +1,23 @@
+# Ignore Python compiled files
+*.pyc
+__pycache__/
+
+# Ignore virtual environment folder
+env/
+venv/
+
+# Ignore Django local settings (if any)
+*.sqlite3
+db.sqlite3
+
+# Ignore staticfiles collected (if you use collectstatic)
+staticfiles/
+
+# Ignore IDE/editor config files
+.vscode/
+.idea/
+*.swp
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
