@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Logged Out | Django Blog{% endblock %}
+
+{% block content %}
+<h2 style="text-align: center; margin-bottom: 20px;">You have been logged out.</h2>
+<p style="text-align: center;">
+    <a href="{% url 'login' %}">Login again</a>
+</p>
+{% endblock %}
