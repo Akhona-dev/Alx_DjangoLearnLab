@@ -6,6 +6,7 @@ from .models import Author
 from .models import Book
 from rest_framework import generics
 from . import serializers
+from django_filters import rest_framework
 
 #-------------------------------------
 #first View
