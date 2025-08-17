@@ -20,7 +20,7 @@ class BookListView(generics.ListAPIView): #creates a class based view
 
     """Adds a search functionality"""
     filter_backends = [filters.SearchFilter ,filters.OrderingFilter]
-    search_fields = ['title', 'author__name'] #specifies which fields are available for search
+    search_fields = ['title', 'author','publication_year'] #specifies which fields are available for search
 
     """Allows users to order their search results by title or publication year"""
 
