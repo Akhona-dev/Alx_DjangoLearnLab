@@ -13,5 +13,5 @@ class Book(models.Model):
     author = models.ForeignKey(
         Author,
         on_delete=models.CASCADE,  # if author is deleted, deletes their books
-        related_name='books',      
+        related_name='author__name',      
     )
