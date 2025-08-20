@@ -13,7 +13,7 @@ def register(request):
             return redirect('login')
     else:
         form = CustomUserCreationForm()
-    return render(request, 'accounts/register.html', {'form': form})
+    return render(request, 'blog/register.html', {'form': form})
 
 #----------------------------------------
 # Profile view: View and edit user profile
@@ -28,4 +28,4 @@ def profile(request):
     else:
         form = ProfileUpdateForm(instance=request.user)
 
-    return render(request, "accounts/profile.html", {"form": form})
+    return render(request, "blog/profile.html", {"form": form})
