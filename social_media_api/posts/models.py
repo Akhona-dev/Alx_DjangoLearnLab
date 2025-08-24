@@ -1,6 +1,21 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+class CustomUser(AbstractUser):
+    bio = models.TextField(blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profiles/', blank=True, null=True)
+
+    # Followers & Following relationship
+    followers = models.ManyToManyField(
+        "self",
+        symmetrical=False,
+        related_name="following",
+        blank=True
+    )
+
+    def __str__(self):
+        return self.username
+
 User = get_user_model()
 
 class Post(models.Model):
