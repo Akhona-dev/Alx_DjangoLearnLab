@@ -1,12 +1,13 @@
 from rest_framework import viewsets, permissions, filters
-from .models import Post, Comment
-from .serializers import PostSerializer, CommentSerializer
+from .models import Post, Comment, Like
+from .serializers import PostSerializer, CommentSerializer, LikeSerializer
 from rest_framework import status, generics
 from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from .serializers import PostSerializer
+from notifications.models import Notification
+from django.contrib.contenttypes.models import ContentType
 
 class FeedView(APIView):
     permission_classes = [IsAuthenticated]
@@ -87,3 +88,36 @@ class FeedView(APIView):
         posts = Post.objects.filter(author__in=following_users).order_by("-created_at")
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
+
+
+class LikePostView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        like, created = Like.objects.get_or_create(post=post, user=request.user)
+        if not created:
+            return Response({"error": "You already liked this post"}, status=400)
+
+        # Create notification
+        Notification.objects.create(
+            recipient=post.author,
+            actor=request.user,
+            verb="liked your post",
+            target_content_type=ContentType.objects.get_for_model(post),
+            target_object_id=post.id,
+        )
+
+        return Response({"message": "Post liked"})
+
+
+class UnlikePostView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        post = Post.objects.get(pk=pk)
+        like = Like.objects.filter(post=post, user=request.user).first()
+        if not like:
+            return Response({"error": "You haven't liked this post"}, status=400)
+        like.delete()
+        return Response({"message": "Post unliked"})
