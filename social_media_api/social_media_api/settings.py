@@ -58,9 +58,14 @@ WSGI_APPLICATION = 'social_media_api.wsgi.application'
 
 # Database
 DATABASES = {
-    'default': dj_database_url.config(
-        default='mysql://root:akhonatrom@localhost:3306/DAILY'
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'DAILY',
+        'USER': 'root',
+        'PASSWORD': 'akhonatrom',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
 }
 
 # Password validation
