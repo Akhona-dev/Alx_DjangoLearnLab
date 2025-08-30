@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY
 SECRET_KEY = 'django-insecure-&_!hh8n2-%#ir694knl+@n%i-$$p6tyrv((_t$q7p9)ybi%qae'
 DEBUG = False
-ALLOWED_HOSTS = ['*']  # For deployment, replace '*' with your Render/Heroku host when known
+ALLOWED_HOSTS = ['SOCIAL_MEDIA_API.onrender.com']
 
 # Installed apps
 INSTALLED_APPS = [
